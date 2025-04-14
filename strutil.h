@@ -483,6 +483,12 @@ namespace strutil
         return result.str();
     }
 
+    template<typename Container, typename Predicate>
+    void erase_if(Container& container, Predicate pred) {
+        auto it = std::remove_if(container.begin(), container.end(), pred);
+        container.erase(it, container.end());
+    }
+
     /**
      * @brief Inplace removal of all empty strings in a container of strings
      * @tparam Container - container type.
@@ -491,7 +497,7 @@ namespace strutil
     template<template<typename, typename...> typename Container, typename... Args>
     static inline void drop_empty(Container<std::string, Args...> & tokens)
     {
-        auto last = std::erase_if(tokens, [](auto& s){ return s.empty(); });
+        auto last = erase_if(tokens, [](auto& s){ return s.empty(); });
     }
 
     /**
